@@ -1,0 +1,49 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers: 
+- url: /  
+  static_files: www/index.html
+  upload: www/index.html
+
+- url: /(.*)
+  static_files: www/\1
+  upload: www/(.*)
+
+- url: /style.css
+  static_files: www/style.css
+  upload: www/style.css
+
+- url: /script.js
+  static_files: www/script.js
+  upload: www/script.js
+  # Add this handler for dynamic script execution
+- url: /(.*\.js)
+  script: auto
+
+- url: /static
+  static_dir: static
+
+# service: my-app
+instance_class: F2
+automatic_scaling:
+  # Default 0 | 0 to 1000
+  min_instances: 0
+  # Default 0 | 0 to 2147483647
+  max_instances: 100
+  # Default: automatic | 1 to 1000
+  # max_idle_instances: automatic
+  max_idle_instances: 1000
+  # Default automatic | 0 to 1000 
+  min_idle_instances: 0
+  # Default: 0.6 | 0.5 to 0.95
+  target_cpu_utilization: 0.6 
+  # Default: 0.6 | 0.5 to 0.95
+  target_throughput_utilization: 0.6 
+  # Default 10, max 80
+  max_concurrent_requests: 10 
+  # Default automatic | Range: [0.01, 15.0]. | Match expression: '^(?:^(\d+((\.\d{1,3})?s|ms)|automatic)$)$'
+  max_pending_latency: 1s 
+  # Default automatic | Range: [0.01, 15.0]. | Match expression: '^(?:^(\d+((\.\d{1,3})?s|ms)|automatic)$)$'
+  min_pending_latency: automatic
